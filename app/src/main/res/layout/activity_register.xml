@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/friends2"
+    tools:context=".Register">
+
+
+    <ImageView
+        android:id="@+id/backButton"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="26dp"
+        android:layout_marginLeft="26dp"
+        android:layout_marginTop="38dp"
+        android:clickable="true"
+        android:background="@drawable/arrow" />
+
+    <ImageView
+        android:layout_width="289dp"
+        android:layout_height="0dp"
+        android:layout_alignParentStart="true"
+        android:id="@+id/mrRobot"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="59dp"
+        android:layout_marginLeft="59dp"
+        android:layout_marginTop="63dp"
+        android:background="@drawable/mrrobot" />
+
+    <EditText
+        android:id="@+id/email"
+        android:layout_width="299.42dp"
+        android:layout_height="49.75dp"
+        android:layout_below="@+id/mrRobot"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="153dp"
+        android:hint="Email Address"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#FFFFFF"
+        android:textAlignment="center"
+        android:background="@drawable/redrectangle"
+        android:layout_gravity="center_horizontal" />
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="299.42dp"
+        android:layout_height="49.75dp"
+        android:layout_below="@+id/mrRobot"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="220dp"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#FFFFFF"
+        android:textAlignment="center"
+        android:background="@drawable/redrectangle"
+        android:layout_gravity="center_horizontal" />
+
+    <Button
+        android:id="@+id/createAccount"
+        android:layout_width="322dp"
+        android:layout_height="49.75dp"
+        android:layout_below="@+id/mrRobot"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="290dp"
+        android:background="@drawable/createacc" />
+
+
+    <ImageView
+        android:layout_width="12.25dp"
+        android:layout_height="12dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="71dp"
+        android:layout_marginLeft="71dp"
+        android:layout_marginTop="235dp"
+        android:background="@drawable/email" />
+
+    <ImageView
+        android:layout_width="12.25dp"
+        android:layout_height="12dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="72dp"
+        android:layout_marginLeft="72dp"
+        android:layout_marginTop="301dp"
+        android:background="@drawable/password" />
+
+
+</RelativeLayout>

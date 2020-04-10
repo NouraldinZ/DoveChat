@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/friends"
+
+    tools:context=".LoginActivity">
+
+    <ImageView
+        android:layout_width="289dp"
+        android:layout_height="0dp"
+        android:layout_alignParentStart="true"
+        android:id="@+id/mrRobot"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="59dp"
+        android:layout_marginLeft="59dp"
+        android:layout_marginTop="243dp"
+        android:background="@drawable/mrrobot" />
+
+    <EditText
+        android:id="@+id/email"
+        android:layout_width="299.42dp"
+        android:layout_height="49.75dp"
+        android:layout_below="@+id/mrRobot"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="33dp"
+        android:hint="Email Address"
+        android:textColorHint="#FFFFFF"
+        android:textAlignment="center"
+        android:background="@drawable/redrectangle" />
+
+    <EditText
+        android:id="@+id/Password"
+        android:layout_width="299.42dp"
+        android:layout_height="49.75dp"
+        android:layout_below="@+id/mrRobot"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="100dp"
+        android:hint="Password"
+        android:textColorHint="#FFFFFF"
+        android:textAlignment="center"
+        android:background="@drawable/redrectangle" />
+
+    <Button
+        android:id="@+id/loginButton"
+        android:layout_width="322dp"
+        android:layout_height="49.75dp"
+        android:layout_below="@+id/mrRobot"
+        android:layout_marginTop="170dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/loginbutton" />
+
+    <Button
+        android:id="@+id/phoneLoginButton"
+        android:layout_width="322dp"
+        android:layout_height="49.75dp"
+        android:layout_below="@+id/mrRobot"
+        android:layout_marginTop="220dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/phonebutton" />
+
+
+    <ImageView
+        android:id="@+id/line"
+        android:layout_width="311dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="570dp"
+        android:layout_marginStart="59dp"
+        android:layout_marginLeft="59dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/line" />
+
+    <ImageView
+        android:layout_width="12.25dp"
+        android:layout_height="12dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="73dp"
+        android:layout_marginLeft="73dp"
+        android:layout_marginTop="294dp"
+        android:background="@drawable/email" />
+
+    <ImageView
+        android:id="@+id/forgetPassword"
+        android:layout_width="12.25dp"
+        android:layout_height="12dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="72dp"
+        android:layout_marginLeft="72dp"
+        android:layout_marginTop="361dp"
+        android:background="@drawable/password" />
+
+    <TextView
+        android:layout_width="114dp"
+        android:layout_height="16dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="178dp"
+        android:background="@drawable/forget" />
+
+    <TextView
+        android:id="@+id/signup"
+        android:layout_width="50dp"
+        android:layout_height="16dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="233dp"
+        android:layout_marginLeft="233dp"
+        android:layout_marginBottom="123dp"
+        android:background="@drawable/signup" />
+
+    <TextView
+        android:layout_width="120dp"
+        android:layout_height="14dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="105dp"
+        android:layout_marginLeft="105dp"
+        android:layout_marginBottom="123dp"
+        android:background="@drawable/donthaveaccount" />
+
+</RelativeLayout>
