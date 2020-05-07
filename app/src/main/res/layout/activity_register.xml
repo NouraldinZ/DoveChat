@@ -31,7 +31,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="59dp"
         android:layout_marginLeft="59dp"
-        android:layout_marginTop="63dp"
+        android:layout_marginTop="33dp"
         android:background="@drawable/mrrobot" />
 
     <EditText
@@ -81,7 +81,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="71dp"
         android:layout_marginLeft="71dp"
-        android:layout_marginTop="235dp"
+        android:layout_marginTop="205dp"
         android:background="@drawable/email" />
 
     <ImageView
@@ -92,7 +92,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="72dp"
         android:layout_marginLeft="72dp"
-        android:layout_marginTop="301dp"
+        android:layout_marginTop="271dp"
         android:background="@drawable/password" />
 
 

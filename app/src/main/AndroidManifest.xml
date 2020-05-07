@@ -9,10 +9,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".FindFriendsActivity"
+            android:parentActivityName=".Messenger">
+
+        </activity>
         <activity
             android:name=".PhoneLogin"
             android:label="@string/title_activity_phone_login"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".GroupChatActivity"
             android:label="@string/title_activity_group_chat"
@@ -23,7 +27,7 @@
         <activity android:name=".SignIn" />
         <activity android:name=".Messenger" />
         <activity android:name=".Dashboard" />
-        <activity android:name=".gender2" />
+        <activity android:name=".Gender2" />
         <activity android:name=".Gender1" />
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -32,7 +36,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat" />
     </application>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <uses-permission android:name="android.permission.INTERNET" />
 

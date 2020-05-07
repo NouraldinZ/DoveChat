@@ -99,7 +99,7 @@ public class LoginActivity extends AppCompatActivity {
 
             loadingBar.setTitle("Logging In");
             loadingBar.setMessage("Please Wait, while we validate your credentials ...");
-            loadingBar.setCanceledOnTouchOutside(true);
+            loadingBar.setCanceledOnTouchOutside(false);
             loadingBar.show();
 
             authenticate.signInWithEmailAndPassword(email,passwordS).addOnCompleteListener(new OnCompleteListener<AuthResult>() {

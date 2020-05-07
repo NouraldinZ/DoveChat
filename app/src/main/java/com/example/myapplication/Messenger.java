@@ -130,11 +130,15 @@ public class Messenger extends AppCompatActivity {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
 
         if (item.getItemId() == R.id.findFrineds){
+
+            Intent goToFindFriends = new Intent(Messenger.this,FindFriendsActivity.class);
+            startActivity(goToFindFriends);
 
         }
 
