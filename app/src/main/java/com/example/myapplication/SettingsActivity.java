@@ -7,24 +7,19 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -34,15 +29,13 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.util.HashMap;
-import java.util.Set;
 
 public class SettingsActivity extends AppCompatActivity {
-    private ImageView backButton;
+    private ImageView backButton, profileCover;
     private Button updateButton;
     private EditText username, status;
     private CircleImageView profileImage;
@@ -50,6 +43,7 @@ public class SettingsActivity extends AppCompatActivity {
     private FirebaseAuth authenticate;
     private DatabaseReference rootRef;
     private String currentUserID;
+    private Boolean isCover = false;
 
     private static final int galleryPick = 1;
     private StorageReference userProfileImageRef;
@@ -72,6 +66,8 @@ public class SettingsActivity extends AppCompatActivity {
         currentUserID = authenticate.getCurrentUser().getUid();
         userProfileImageRef = FirebaseStorage.getInstance().getReference().child("Profile Images");
 
+        profileCover = findViewById(R.id.profile_cover);
+
         updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,6 +85,18 @@ public class SettingsActivity extends AppCompatActivity {
 
         RetrieveUserInfo();
 
+        profileCover.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CropImage.activity()
+                        .setGuidelines(CropImageView.Guidelines.ON)
+                        .setAspectRatio(1,1)
+                        .start(SettingsActivity.this);
+
+                isCover = true;
+
+            }
+        });
         profileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -109,7 +117,60 @@ public class SettingsActivity extends AppCompatActivity {
             if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
                 CropImage.ActivityResult result = CropImage.getActivityResult(data);
 
-                if (resultCode == RESULT_OK) {
+                if (resultCode == RESULT_OK && isCover) {
+
+                    loadingBar.setTitle("Set Profile Cover");
+                    loadingBar.setMessage("Please wait your cover is updating...");
+                    loadingBar.setCanceledOnTouchOutside(false);
+                    loadingBar.show();
+
+                    Uri resultUri = result.getUri();
+
+                    StorageReference filePath = userProfileImageRef.child(currentUserID + "_cover" + ".jpg");
+
+
+                    filePath.putFile(resultUri)
+                            .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                    final Task<Uri> firebaseUri = taskSnapshot.getStorage().getDownloadUrl();
+                                    firebaseUri.addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                        @Override
+                                        public void onSuccess(Uri uri) {
+                                            final String downloadUrl = uri.toString();
+
+                                            Toast.makeText(SettingsActivity.this, downloadUrl, Toast.LENGTH_SHORT).show();
+
+                                            rootRef.child("Users").child(currentUserID).child("cover")
+                                                    .setValue(downloadUrl)
+                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                            if(task.isSuccessful()){
+                                                                Toast.makeText(SettingsActivity.this, "Cover Image saved in database successfully", Toast.LENGTH_SHORT).show();
+                                                                loadingBar.dismiss();
+                                                                Glide.with(SettingsActivity.this).load(downloadUrl).error(R.drawable.profile_image).into(profileCover);
+                                                                isCover = false;
+                                                            }
+                                                            else{
+                                                                String message = task.getException().toString();
+                                                                Toast.makeText(SettingsActivity.this, "Error: " + message,Toast.LENGTH_SHORT).show();
+                                                                loadingBar.dismiss();
+                                                                isCover = false;
+                                                            }
+
+                                                        }
+                                                    });
+
+                                        }
+                                    });
+
+                                }
+                            });
+
+            }
+
+                else if (resultCode == RESULT_OK) {
 
                     loadingBar.setTitle("Set Profile Image");
                     loadingBar.setMessage("Please wait your image is updating...");
@@ -133,7 +194,7 @@ public class SettingsActivity extends AppCompatActivity {
 
                                             Toast.makeText(SettingsActivity.this, downloadUrl, Toast.LENGTH_SHORT).show();
 
-                                            rootRef.child("Users").child(currentUserID).child("profile image")
+                                            rootRef.child("Users").child(currentUserID).child("image")
                                                     .setValue(downloadUrl)
                                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                         @Override
@@ -141,7 +202,7 @@ public class SettingsActivity extends AppCompatActivity {
                                                             if(task.isSuccessful()){
                                                                 Toast.makeText(SettingsActivity.this, "Image saved in database successfully", Toast.LENGTH_SHORT).show();
                                                                 loadingBar.dismiss();
-                                                                Glide.with(SettingsActivity.this).load(downloadUrl).into(profileImage);
+                                                                Glide.with(SettingsActivity.this).load(downloadUrl).error(R.drawable.profile_image).into(profileImage);
                                                             }
                                                             else{
                                                                 String message = task.getException().toString();
@@ -158,10 +219,7 @@ public class SettingsActivity extends AppCompatActivity {
 
                                 }
                             });
-
-
-            }
-
+                }
 
         }}
 
@@ -175,18 +233,33 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                if(dataSnapshot.exists() && dataSnapshot.hasChild("name") && dataSnapshot.hasChild("status" ) && dataSnapshot.hasChild("profile image" ) ){
+                if(dataSnapshot.exists() && dataSnapshot.hasChild("name") && dataSnapshot.hasChild("status" ) && dataSnapshot.hasChild("image") && dataSnapshot.hasChild("cover") ){
 
                 String retrievedUsername = dataSnapshot.child("name").getValue().toString();
                 String retrievedStatus = dataSnapshot.child("status").getValue().toString();
-                String retrievedProfileImage = dataSnapshot.child("profile image").getValue().toString();
+                String retrievedProfileImage = dataSnapshot.child("image").getValue().toString();
+                String retrievedProfileCover = dataSnapshot.child("cover").getValue().toString();
 
                 username.setText(retrievedUsername);
                 status.setText(retrievedStatus);
-                Toast.makeText(SettingsActivity.this,retrievedProfileImage, Toast.LENGTH_SHORT).show();
 
                 Glide.with(SettingsActivity.this).load(retrievedProfileImage).into(profileImage);
+                Glide.with(SettingsActivity.this).load(retrievedProfileCover).into(profileCover);
                 //trievedProfileImage).placeholder(R.drawable.profile_image).noFade().fit().error(R.drawable.ic_launcher_background).into(profileImage);
+                }
+                else if (dataSnapshot.exists() && dataSnapshot.hasChild("name") && dataSnapshot.hasChild("status" ) && dataSnapshot.hasChild("image") ){
+
+                    String retrievedUsername = dataSnapshot.child("name").getValue().toString();
+                    String retrievedStatus = dataSnapshot.child("status").getValue().toString();
+                    String retrievedProfileImage = dataSnapshot.child("image").getValue().toString();
+
+
+                    username.setText(retrievedUsername);
+                    status.setText(retrievedStatus);
+
+                    Glide.with(SettingsActivity.this).load(retrievedProfileImage).into(profileImage);
+
+                    //trievedProfileImage).placeholder(R.drawable.profile_image).noFade().fit().error(R.drawable.ic_launcher_background).into(profileImage);
                 }
                 else if (dataSnapshot.exists() && dataSnapshot.hasChild("name") && dataSnapshot.hasChild("status" ) ){
 
@@ -221,11 +294,11 @@ public class SettingsActivity extends AppCompatActivity {
 
                 if (!(dataSnapshot.child("name").exists())) {
 
-                    if (TextUtils.isEmpty(statusS)) {
+                    if (TextUtils.isEmpty(usernameS)) {
                         Toast.makeText(SettingsActivity.this, "Please enter a username", Toast.LENGTH_SHORT).show();
                     }
 
-                    if (TextUtils.isEmpty(statusS)) {
+                    else if (TextUtils.isEmpty(statusS)) {
                         Toast.makeText(SettingsActivity.this, "Please enter a status", Toast.LENGTH_SHORT).show();
                     }
 
@@ -262,41 +335,18 @@ public class SettingsActivity extends AppCompatActivity {
                 }
 
                 else{
-                    boolean usernameFlag = false;
-                    boolean statusFlag = false;
-                    if(TextUtils.isEmpty(usernameS) && TextUtils.isEmpty(statusS)){
-                        Toast.makeText(SettingsActivity.this, "Please enter a username or status", Toast.LENGTH_SHORT).show();
 
+                    if (TextUtils.isEmpty(usernameS)) {
+                        Toast.makeText(SettingsActivity.this, "Please enter a username", Toast.LENGTH_SHORT).show();
                     }
 
-                    else if(TextUtils.isEmpty(statusS)) {
-                        usernameFlag=true;
+                    else if (TextUtils.isEmpty(statusS)) {
+                        Toast.makeText(SettingsActivity.this, "Please enter a status", Toast.LENGTH_SHORT).show();
                     }
 
-                    else {
-                        statusFlag=true;
-                    }
-
-                    if (usernameFlag | statusFlag ) {
-
-                        HashMap<String,String> profileMap = new HashMap<>();
-
-                        profileMap.put("uid", currentUserID);
-
-                        if(usernameFlag){
-                            profileMap.put("name", usernameS);
-                            String statuss = dataSnapshot.child("status").getValue().toString();
-                            profileMap.put("status",statuss);
-                        }
-                        else if (statusFlag){
-                            profileMap.put("status", statusS);
-                            String statuss = dataSnapshot.child("name").getValue().toString();
-                            profileMap.put("name",statuss);
-                        }
-
-
-
-                        rootRef.child("Users").child(currentUserID).setValue(profileMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    else{
+                    rootRef.child("Users").child(currentUserID).child("name").setValue(usernameS);
+                    rootRef.child("Users").child(currentUserID).child("status").setValue(statusS).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()){
@@ -313,8 +363,7 @@ public class SettingsActivity extends AppCompatActivity {
                             }
                         });
 
-                    }
-                }
+                }}
 
             }
 

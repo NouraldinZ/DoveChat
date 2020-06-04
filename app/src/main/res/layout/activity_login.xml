@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bbackground"
+    android:background="@color/colorPrimary"
     tools:context=".LoginActivity">
 
     <ImageView
@@ -95,9 +95,9 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="73dp"
+        android:layout_marginStart="80dp"
         android:layout_marginLeft="73dp"
-        android:layout_marginTop="244dp"
+        android:layout_marginTop="254dp"
         android:background="@drawable/email" />
 
     <ImageView
@@ -106,9 +106,9 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="72dp"
+        android:layout_marginStart="80dp"
         android:layout_marginLeft="72dp"
-        android:layout_marginTop="311dp"
+        android:layout_marginTop="321dp"
         android:background="@drawable/password" />
 
     <TextView
